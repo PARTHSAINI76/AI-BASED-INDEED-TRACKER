@@ -1,0 +1,13 @@
+timestamp,user,action,source,records
+2026-10-30T15:06:12,saini,generate_shortlist,sample,19
+2026-10-30T15:06:13,saini,calling_prototype,sample,4
+2026-10-30T15:06:30,saini,generate_shortlist,sample,19
+2026-10-30T15:06:30,saini,calling_prototype,sample,4
+2026-10-30T15:07:48,saini,generate_shortlist,sample,19
+2026-10-30T15:07:48,saini,calling_prototype,sample,4
+2026-10-30T15:07:48,saini,interview_schedule,sample,4
+2026-10-30T15:08:06,saini,generate_shortlist,sample,19
+2026-10-30T15:08:06,saini,calling_prototype,sample,4
+2026-10-30T15:08:21,saini,generate_shortlist,sample,19
+2026-10-30T15:08:21,saini,calling_prototype,sample,4
+2026-10-30T15:08:22,saini,interview_schedule,sample,4

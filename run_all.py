@@ -1,17 +1,3 @@
-"""
-Run the complete recruitment workflow (Tasks 1-5) end to end in SAFE / SIMULATED mode.
-
-  python run_all.py
-
-Task 1  build_tracker.py + publish_to_indeed.py   -> Indeed_Job_Posting_Tracker.xlsx
-Task 2  categorise_applicants.py                  -> Indeed_Applicant_Summary.xlsx
-Task 3  shortlist_candidates.py                   -> Indeed_Candidate_Database.xlsx, Indeed_Shortlist_Masked.xlsx
-Task 4  auto_calling.py                           -> Calling_Prototype.xlsx
-Task 5  schedule_interviews.py                    -> Interview_Schedule.xlsx, Interview_Schedule_HiringTeam.xlsx
-
-Nothing is posted, called or emailed. Real accounts/vendors plug in through the provider interfaces
-(see README.md). Optional env: AUTHORISED_USERS, REQUESTING_USER, CANDIDATE_DB_PASSWORD.
-"""
 import logging
 
 import auto_calling

@@ -1,22 +1,3 @@
-"""
-Task 5 - Results & interview scheduling.
-
-Input   : candidates + final call outcomes from Task 4 (Interested / Callback Requested / no-consent).
-Output  : interview schedule (HR version with contacts, masked hiring-team version), message log,
-          status history and an executable test suite.
-
-Design
-------
-Scheduler        : weekday slot grid (45-min interviews on the hour, lunch blocked), one calendar per
-                   interviewer, availability-aware earliest-slot search, no double booking of either side.
-Status engine    : Confirmation Pending -> Scheduled (acknowledged) | Rescheduled (candidate asked to move)
-                   | No Response (no acknowledgement within 48 h) | Declined. Slots are released when an
-                   interview is rescheduled, declined or lapses.
-Messaging        : Sender interface. MockSender only LOGS drafts ("SIMULATED - not sent"); plug in an
-                   approved email/SMS sender later. Nothing is sent from this prototype.
-Placeholders     : interviewer names, HR contact, office address and meeting links are clearly marked
-                   "TBC"/placeholder and must be replaced with real, approved details.
-"""
 from __future__ import annotations
 
 import logging
@@ -321,7 +302,7 @@ def run_tests() -> list[tuple]:
 
     sch = Scheduler(MockSender())
     iv = sch.propose("A", cand(1, "JP-002"), Availability(), base)
-    body = confirmation_message(iv)
+    subj, body = confirmation_message(iv)
     needs = [f"{iv.start:%d %B %Y}", f"{iv.start:%I:%M %p}", iv.mode, iv.venue, iv.interviewer, HR_CONTACT, "CONFIRM"]
     add("Message", "Contains date, time, mode, venue, interviewer, contact, ack request", "True",
         all(x in body for x in needs))

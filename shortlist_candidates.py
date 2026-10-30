@@ -1,25 +1,3 @@
-"""
-Task 3 - Applicant extraction & filtering: consolidated, access-controlled shortlist.
-
-Design
-------
-Data in     : ONLY Indeed's permitted export (CSV from the employer dashboard) or the SAMPLE set.
-              No scraping, no bots, no unofficial endpoints.
-Data kept   : name, email, phone, location, relevant experience, skills, application date, status.
-              Nothing else (no age, gender, photo, religion, marital status, etc.).
-Consolidate : applications are linked by normalised email OR phone (union-find), so one candidate
-              who applied twice, or to several jobs, gets ONE record.
-Decision    : Shortlisted / On Hold / Not Shortlisted + priority + brief job-related reason.
-Access      : run-time authorisation check, restricted file permissions, optional workbook password
-              (from env, never in code), access log, and a masked export for wider sharing.
-
-Usage
------
-  python shortlist_candidates.py                                    # sample data
-  APPLICANT_SOURCE=csv APPLICANT_CSV=export.csv \
-  AUTHORISED_USERS="hr.lead,recruiter1" REQUESTING_USER=recruiter1 \
-  CANDIDATE_DB_PASSWORD='...' python shortlist_candidates.py        # real data
-"""
 from __future__ import annotations
 
 import csv
@@ -30,14 +8,19 @@ import re
 from datetime import date, datetime
 from pathlib import Path
 
+from build_tracker import JOBS
+from categorise_applicants import (
+    JOB_CRITERIA,
+    SampleSource,
+    _skill_list,
+    classify,
+    get_source,
+)
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Protection, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.workbook.protection import WorkbookProtection
 from openpyxl.worksheet.datavalidation import DataValidation
-
-from build_tracker import JOBS
-from categorise_applicants import JOB_CRITERIA, SampleSource, _skill_list, classify, get_source
 
 log = logging.getLogger("shortlist")
 DB_FILE = "Indeed_Candidate_Database.xlsx"
@@ -171,7 +154,7 @@ def consolidate(apps: list[dict]) -> tuple[list[dict], list[dict]]:
         g.sort(key=lambda a: (a["score"], a["applied_date"] or date.min), reverse=True)
         best = g[0]
 
-        def pick(field):  # first non-empty value, best application first
+        def pick(field, group=g):  # first non-empty value, best application first
             return next((a[field] for a in g if a.get(field) not in (None, "")), "")
 
         jobs = sorted({a["job_id"] for a in g})
